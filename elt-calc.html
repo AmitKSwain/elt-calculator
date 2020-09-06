@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <script>
+       function calcTax() {
+        var x = document.getElementById("widowed").value;
+        alert("The value of the radio button is: " + x);
+        }
+        
+    </script>
+
+    <style>
+        body {
+            background-color: aqua;
+        }
+
+        main {
+            background-color: rgb(101, 109, 233);
+            min-height: auto;
+            width: auto;
+            margin-left: 5%;
+            margin-right: 5%;
+            margin-top: 30px;
+            border-radius: 30px;
+            padding-top: 10%;
+        }
+
+        .capsul {
+            background-color: rgb(170, 97, 146);
+            height: 90%;
+            width: 90%;
+            margin-left: 5%;
+            margin-right: 5%;
+
+        }
+
+        .row {
+            background-color: rgb(166, 189, 34);
+            min-height: 30px;
+            width: 100%;
+        }
+
+        .col1 {
+            background-color: rgb(85, 188, 192);
+            height: 100%;
+            width: 50%;
+            float: left;
+        }
+
+        .col2 {
+            background-color: rgb(120, 138, 43);
+            height: 100%;
+            width: 50%;
+            float: left;
+        }
+
+        .center {
+            width: 20%;
+            margin-left: 45%;
+            margin-right: 30%;
+        }
+    </style>
+
+    <title>ELT Calculator</title>
+
+</head>
+
+<body>
+    <main>
+        <div class="capsul">
+            <div class="row">Wealth Tax Calculator</div>
+            <div class="row">
+                <div class="col1">
+                    <label for="age">Age:</label>
+                </div>
+                <div class="col2">
+                    <select name="age" id="age">
+                        <option value="young">Below 60</option>
+                        <option value="aged">Between 60-70</option>
+                        <option value="old">Above 70</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col1">Are you widowed ?</div>
+                <div class="col2" disabled ="true">
+                    <input type="radio" name="widowed" value="Y" > Yes
+                    <input type="radio" name="widowed" value="N" checked="checked" > No
+                </div>
+            </div>
+            <div class="row">
+                <div class="col1">
+                    <label for="city">City:</label>
+                </div>
+                <div class="col2">
+                    <select name="city" id="city">
+                        <option value="big">Metro</option>
+                        <option value="small">Non Metro</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col1">Amount of Residensial land</div>
+
+                <div class="col2">
+                    <input type="text" id="resland" name="resland">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col1">Amount of construction</div>
+
+                <div class="col2">
+                    <input type="text" id="construction" name="construction">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col1">Amount of Agri land</div>
+
+                <div class="col2">
+                    <input type="text" id="agriland" name="agriland">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col1">Credit points recieved</div>
+
+                <div class="col2">
+                    <input type="text" id="cred" name="cred">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col1">Incometax payed on salary</div>
+
+                <div class="col2">
+                    <input type="text" id="salitax" name="salitax">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col1">incometax payed on non salary</div>
+
+                <div class="col2">
+                    <input type="text" id="nsalitax" name="nsalitax">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col1">Charity points recieved</div>
+
+                <div class="col2">
+                    <input type="text" id="csp" name="csp">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col1">Do you pay incometax for staff?</div>
+                <div class="col2">
+                    <input type="radio" name="stafftax" value="Y"> Yes
+                    <input type="radio" name="stafftax" value="N"> No
+                </div>
+            </div>
+            <div class="row">
+                <div class="col1">Incometax payed for salary to staf</div>
+
+                <div class="col2">
+                    <input type="text" id="staftaxamt" name="staftaxamt">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col1">total salary given to staf</div>
+
+                <div class="col2">
+                    <input type="text" id="stafsal" name="stafsal">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col1">Provident fund given to employees</div>
+
+                <div class="col2">
+                    <input type="text" id="stafpf" name="stafpf">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col1">Electricity tax </div>
+
+                <div class="col2">
+                    <input type="text" id="etax" name="etax">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col1">StampDuty rebate </div>
+
+                <div class="col2">
+                    <input type="text" id="stamprebate" name="stamprebate">
+                </div>
+            </div>
+            <div class="row">
+                <div class="center">
+                    <button type="button" onclick="calcTax()">Submit</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col1"> Tax amount : </div>
+
+                <div class="col2">
+                    <label id="result" for="result">result</label>
+                </div>
+            </div>
+
+        </div>
+    </main>
+</body>
+
+</html>
