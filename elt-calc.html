@@ -1,216 +1,233 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-
-    <script>
-       function calcTax() {
-        var x = document.getElementById("widowed").value;
-        alert("The value of the radio button is: " + x);
-        }
-        
-    </script>
-
+    <title>Document</title>
+    <!--Bootstrap CSS-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+     
     <style>
-        body {
-            background-color: aqua;
+     .bwidth{
+              width: 70%;
+              margin: auto;
+            }
+      @media(max-width: 600px){
+              .bwidth{
+                width: 100%;
+              }
         }
-
-        main {
-            background-color: rgb(101, 109, 233);
-            min-height: auto;
-            width: auto;
-            margin-left: 5%;
-            margin-right: 5%;
-            margin-top: 30px;
-            border-radius: 30px;
-            padding-top: 10%;
-        }
-
-        .capsul {
-            background-color: rgb(170, 97, 146);
-            height: 90%;
-            width: 90%;
-            margin-left: 5%;
-            margin-right: 5%;
-
-        }
-
-        .row {
-            background-color: rgb(166, 189, 34);
-            min-height: 30px;
-            width: 100%;
-        }
-
-        .col1 {
-            background-color: rgb(85, 188, 192);
-            height: 100%;
-            width: 50%;
-            float: left;
-        }
-
-        .col2 {
-            background-color: rgb(120, 138, 43);
-            height: 100%;
-            width: 50%;
-            float: left;
-        }
-
-        .center {
-            width: 20%;
-            margin-left: 45%;
-            margin-right: 30%;
-        }
+      .swal-footer{
+             text-align: center;
+            }
     </style>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
+    function calculateElt(){
+          
+         var age = document.getElementById("age").value;
+         var city = document.getElementById("city").value;
+         var isWidow = document.getElementById("widowStatusYes").checked;
+         var residentialLand  = document.getElementById("residentialLand").value;
+         var residentialLandValue  = document.getElementById("residentialLandValue").value;
+         var construction     = document.getElementById("construction").value;
+         var constructionValue     = document.getElementById("constructionValue").value;
+         var agriculturalLand = document.getElementById("agriculturalLand").value;
+         var agriculturalLandValue = document.getElementById("agriculturalLandValue").value;
+         var creditPoints     = document.getElementById("creditPoints").value;
+         var incomTaxOnSalary = document.getElementById("incomTaxOnSalary").value;
+         var incomeTaxOnNonSalary = document.getElementById("incomeTaxOnNonSalary").value;
+         var charityPoints = document.getElementById("charityPoints").value;
+         var incomeTaxOnStaffSalary = document.getElementById("incomeTaxOnStaffSalary").value;
+         var staffSalary = document.getElementById("staffSalary").value;
+         var pfStaff = document.getElementById("pfStaff").value;
+         var electricitytax = document.getElementById("electricitytax").value;
+         var stampDuty = document.getElementById("stampDuty").value;
 
-    <title>ELT Calculator</title>
+        
+         // Basic exemptions 
+         var residentialLandExemption = 250;
+         var agriculturalLandExemption = 2;
+         var constructionExcemption = 500;
+         
+         // Tax Deductions 
+         var cspRebate = parseFloat(charityPoints * 100);
+         var staffPfrebate =  parseFloat(pfStaff * 0.15);
+         var staffSalaryRebate =  parseFloat(staffSalary * 0.05);
+         var staffITRebate =  parseFloat(incomeTaxOnStaffSalary * 0.5);
+         var salaryITRebate =  parseFloat(incomTaxOnSalary * 0.5);
+         var nonSalaryITRebate =  parseFloat(incomeTaxOnNonSalary);
+         
+         // Govt valuation of land and property 
+         var govtPerSqFeetResLandValue = (residentialLandValue * 0.8) / residentialLand;
+         var govtPerSqFeetConstructionValue = (constructionValue * 0.6) / construction;
+         var govtPerAcreAgriLandValue = (agriculturalLandValue * 0.8) / agriculturalLand;
 
+         // Increasing exemptions based on city type
+         if (city == "nonmetro"){
+             residentialLandExemption = residentialLandExemption * 2 ;
+             constructionExcemption = constructionExcemption * 2 ;
+         }
+
+         // Further increasing exemption for aged and widowed
+         if(age == "veryold" ){
+             residentialLandExemption = residentialLandExemption * 4 ;
+             constructionExcemption = constructionExcemption * 4 ;
+             agriculturalLandExemption = agriculturalLandExemption * 4;
+         }else if(age == "old"){
+             residentialLandExemption = residentialLandExemption * 2 ;
+             constructionExcemption = constructionExcemption * 2 ;
+             agriculturalLandExemption = agriculturalLandExemption * 4;
+         } else if(isWidow){
+             residentialLandExemption = residentialLandExemption * 2 ;
+             constructionExcemption = constructionExcemption * 2 ;
+             agriculturalLandExemption = agriculturalLandExemption * 2 ;
+         }
+         
+         // Taxable land calculation 
+         var taxableResidentialLand = residentialLand - residentialLandExemption ;
+         var taxableConstruction = construction - constructionExcemption;
+         var taxableAgriculturalLand = agriculturalLand - agriculturalLandExemption ;
+
+         // ELT basic calculation 
+         var elt = 0;
+         var eltRate = 0.01;
+         if(taxableResidentialLand >0){
+             elt = (taxableResidentialLand * govtPerSqFeetResLandValue * eltRate) + elt ;
+         }
+         if(taxableConstruction >0){
+             elt = (taxableConstruction * govtPerSqFeetConstructionValue * eltRate) + elt ;
+         }
+         if(taxableAgriculturalLand >0){
+             elt = (taxableAgriculturalLand * govtPerAcreAgriLandValue * eltRate) +elt ;
+         }
+
+        // Deduction 
+           if(staffITRebate > 0){
+                totalDeduction = cspRebate + staffPfrebate + staffITRebate + salaryITRebate + nonSalaryITRebate +parseFloat(creditPoints) + parseFloat(electricitytax) + parseFloat(stampDuty);
+         } else{
+               totalDeduction = cspRebate + staffPfrebate + staffSalaryRebate + salaryITRebate + nonSalaryITRebate + parseFloat(creditPoints) + parseFloat(electricitytax) + parseFloat(stampDuty);
+                                        
+         }
+        
+        // ELT calculation 
+         elt = elt - totalDeduction ;
+         
+
+        // show result
+         swal({
+                title: 'Empty Land Tax for you is ',
+                text:  "ELT : " + elt,
+                button: {
+                text: "OK",
+                value: true,
+                visible: true,
+                className: "btn btn-primary"
+              }
+            });
+          event.preventDefault();
+    }
+    </script>
+    <title>New ELT Calc</title>
 </head>
-
 <body>
-    <main>
-        <div class="capsul">
-            <div class="row">Wealth Tax Calculator</div>
-            <div class="row">
-                <div class="col1">
-                    <label for="age">Age:</label>
-                </div>
-                <div class="col2">
-                    <select name="age" id="age">
-                        <option value="young">Below 60</option>
-                        <option value="aged">Between 60-70</option>
-                        <option value="old">Above 70</option>
-                    </select>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col1">Are you widowed ?</div>
-                <div class="col2" disabled ="true">
-                    <input type="radio" name="widowed" value="Y" > Yes
-                    <input type="radio" name="widowed" value="N" checked="checked" > No
-                </div>
-            </div>
-            <div class="row">
-                <div class="col1">
-                    <label for="city">City:</label>
-                </div>
-                <div class="col2">
-                    <select name="city" id="city">
-                        <option value="big">Metro</option>
-                        <option value="small">Non Metro</option>
-                    </select>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col1">Amount of Residensial land</div>
+    
+<div class="container">
+<div class="bwidth">
+   <form>
+    <div class="form-group">
+      <label for="age">Age</label>
+      <select class="form-control" id="age">
+        <option value="young">Below 60</option>
+        <option value="old">Between 60-70</option>
+        <option value="veryold">Above 70</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="city">City</label>
+      <select class="form-control" id="city">
+        <option value="metro">Metro City</option>
+        <option value="nonmetro">Non Metro</option>
+      </select>
+    </div>
+    <div class="form-group">
+    <label for="widowStatus">Are you a widow ?</label>
+    <div class="form-check form-check-inline">
+      <input class="form-check-input" type="radio" name="widowStatus" id="widowStatusYes"  value="widowStatusYes" >
+      <label class="form-check-label" for="widowStatusYes">Yes</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input class="form-check-input" type="radio" name="widowStatus" id="widowStatusNo" value="widowStatusNo" checked="checked">
+      <label class="form-check-label" for="widowStatusNo">No</label>
+    </div>
+  </div>
+    <div class="form-group">
+      <label for="residentialLand">Total residential land owned in square feet</label>
+      <input type="number" step="0.001" min="0" class="form-control" id="residentialLand"   placeholder="0.00" value="0">
+    </div>
+    <div class="form-group">
+      <label for="residentialLandValue">Approximate value of Total residential land ownedin rupees</label>
+      <input type="number" step="0.01" min="0" class="form-control" id="residentialLandValue"   placeholder="0.00" value="0">
+    </div>
+    <div class="form-group">
+      <label for="construction">Toatal construction property owned in square feet</label>
+      <input type="number" step="0.001" min="0" class="form-control" id="construction" placeholder="0.00" value="0">
+    </div>
+    <div class="form-group">
+      <label for="constructionValue">Toatal value of construction property owned in rupees</label>
+      <input type="number" step="0.001" min="0" class="form-control" id="constructionValue" placeholder="0.00" value="0">
+    </div>
+    <div class="form-group">
+      <label for="agriculturalLand">Toatal agricultural land owned in acres</label>
+      <input type="number" step="0.001" min="0" class="form-control" id="agriculturalLand"   placeholder="0.00" value="0">
+    </div>
+    <div class="form-group">
+      <label for="agriculturalLandValue">Toatal value of agricultural land owned in rupees </label>
+      <input type="number" step="0.001" min="0" class="form-control" id="agriculturalLandValue"   placeholder="0.00" value="0">
+    </div>
+    <div class="form-group">
+      <label for="creditPoints">Credit points recieved from others</label>
+      <input type="number"  min="0" class="form-control" id="creditPoints" placeholder="0.00" value="0">
+    </div>
+    <div class="form-group">
+      <label for="incomTaxOnSalary">Income tax payed on your salary</label>
+      <input type="number" step="0.001" min="0"  class="form-control" id="incomTaxOnSalary"   placeholder="0.00" value="0">
+    </div>
+    <div class="form-group">
+      <label for="incomeTaxOnNonSalary">Income tax payed on any other income</label>
+      <input type="number" step="0.001" min="0"  class="form-control" id="incomeTaxOnNonSalary" placeholder="0.00" value="0">
+    </div>
+    <div class="form-group">
+      <label for="charityPoints">Charity points recieved</label>
+      <input type="number"  min="0"  class="form-control" id="charityPoints" placeholder="0" value="0">
+    </div>
+    <div class="form-group">
+      <label for="incomeTaxOnStaffSalary">Total incometax payed for salary of staff</label>
+      <input type="number" step="0.01" min="0" class="form-control" id="incomeTaxOnStaffSalary"   placeholder="0.00" value="0">
+    </div>
+    <div class="form-group">
+      <label for="staffSalary">Total amount payed  Salary of staff</label>
+      <input type="number" step="0.01" min="0"  class="form-control" id="staffSalary" placeholder="0.00" value="0">
+    </div>
+    <div class="form-group">
+      <label for="pfStaff">Toatal amount payed for PF of staff</label>
+      <input type="number" step="0.01" min="0" class="form-control" id="pfStaff"   placeholder="0.00" value="0">
+    </div>
+    <div class="form-group">
+      <label for="electricitytax">Total electricity tax payed</label>
+      <input type="number" step="0.01" min="0" class="form-control" id="electricitytax" placeholder="0.00" value="0">
+    </div>
+    <div class="form-group">
+      <label for="stampDuty">Stamp duty payed in last 10 years(only applicable in 1st ELT)</label>
+      <input type="number" step="0.01" min="0" class="form-control" id="stampDuty" placeholder="0.00" value="0">
+    </div>
+    <button type="submit" class="btn btn-primary"  onclick="calculateElt()">Submit</button>
+    
+  </form>
+</div>
+</div>
 
-                <div class="col2">
-                    <input type="text" id="resland" name="resland">
-                </div>
-            </div>
 
-            <div class="row">
-                <div class="col1">Amount of construction</div>
-
-                <div class="col2">
-                    <input type="text" id="construction" name="construction">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col1">Amount of Agri land</div>
-
-                <div class="col2">
-                    <input type="text" id="agriland" name="agriland">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col1">Credit points recieved</div>
-
-                <div class="col2">
-                    <input type="text" id="cred" name="cred">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col1">Incometax payed on salary</div>
-
-                <div class="col2">
-                    <input type="text" id="salitax" name="salitax">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col1">incometax payed on non salary</div>
-
-                <div class="col2">
-                    <input type="text" id="nsalitax" name="nsalitax">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col1">Charity points recieved</div>
-
-                <div class="col2">
-                    <input type="text" id="csp" name="csp">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col1">Do you pay incometax for staff?</div>
-                <div class="col2">
-                    <input type="radio" name="stafftax" value="Y"> Yes
-                    <input type="radio" name="stafftax" value="N"> No
-                </div>
-            </div>
-            <div class="row">
-                <div class="col1">Incometax payed for salary to staf</div>
-
-                <div class="col2">
-                    <input type="text" id="staftaxamt" name="staftaxamt">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col1">total salary given to staf</div>
-
-                <div class="col2">
-                    <input type="text" id="stafsal" name="stafsal">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col1">Provident fund given to employees</div>
-
-                <div class="col2">
-                    <input type="text" id="stafpf" name="stafpf">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col1">Electricity tax </div>
-
-                <div class="col2">
-                    <input type="text" id="etax" name="etax">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col1">StampDuty rebate </div>
-
-                <div class="col2">
-                    <input type="text" id="stamprebate" name="stamprebate">
-                </div>
-            </div>
-            <div class="row">
-                <div class="center">
-                    <button type="button" onclick="calcTax()">Submit</button>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col1"> Tax amount : </div>
-
-                <div class="col2">
-                    <label id="result" for="result">result</label>
-                </div>
-            </div>
-
-        </div>
-    </main>
 </body>
 
 </html>
